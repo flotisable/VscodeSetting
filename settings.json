@@ -1,0 +1,16 @@
+// Place your settings in this file to overwrite the default settings
+{
+  "editor.tabSize" : 2,
+
+	"files.trimTrailingWhitespace" : true,
+  "files.associations": {
+        "*.m": "matlab"
+  },
+
+  "window.zoomLevel": 1,
+  "workbench.activityBar.visible": false,
+  "workbench.colorTheme": "DesertEx",
+  "extensions.ignoreRecommendations": false,
+  "vim.disableAnnoyingNeovimMessage": true,
+  "vim.disableExtension": false
+}

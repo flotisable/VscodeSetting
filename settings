@@ -1,0 +1,14 @@
+os=linux
+
+vscodeSettingsDir=
+vscodeSettingName=settings.json
+vscodeKeybindingName=keybindings.json
+vscodeLocaleName=locale.json
+
+vscodeSettingSource=settings.json
+vscodeKeybindingSource=keybindings.json
+vscodeLocaleSource=locale.json
+
+installSetting=1
+installKeybinding=1
+installLocale=1
