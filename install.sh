@@ -15,21 +15,21 @@ vscodeLocalePath=${vscodeSettingsDir}/${vscodeSettingName}
 # install
 if [ ${installSetting} -eq 1 ]; then
   echo "install setting"
-  #mv ./${vscodeSettingSource} ${vscodeSettingPath}
+  mv ./${vscodeSettingSource} ${vscodeSettingPath}
 fi
 
 if [ ${installKeybinding} -eq 1 ]; then
   echo "install keybinding"
-  #mv ./${vscodeKetbindingSource} ${vscodeKetbindingPath}
+  mv ./${vscodeKetbindingSource} ${vscodeKetbindingPath}
 fi
 
 if [ ${installLocale} -eq 1 ]; then
   echo "install locale"
-  #mv ./${vscodeLocaleSource} ${vscodeLocalePath}
+  mv ./${vscodeLocaleSource} ${vscodeLocalePath}
 fi
 
 while read extension; do
-  echo ${extension};
-  #code --install-extension ${extension}
+  echo "install ${extension}";
+  code --install-extension ${extension}
 done < extensions
 # end install
