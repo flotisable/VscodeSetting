@@ -8,10 +8,17 @@ vscodeSettingPath    := ${vscodeSettingsDir}/${vscodeSettingName}
 vscodeKeybindingPath := ${vscodeSettingsDir}/${vscodeKeybindingName}
 vscodeLocalePath     := ${vscodeSettingsDir}/${vscodeLocaleName}
 
+vscodeSettingFiles := \
+	${vscodeSettingPath} \
+	${vscodeKeybindingPath} #\
+	${vscodeLocalePath}
+
 .PHONY: default
 
-default: ${vscodeSettingPath} ${vscodeKeybindingPath} ${vscodeLocalePath}
-	cp $^ .
+default: ${vscodeSettingFiles}
+	cp ${vscodeSettingPath} .
+	cp ${vscodeKeybindingPath} .
+	#cp ${vscodeLocalePath} .
 
 install:
 	./install.sh
