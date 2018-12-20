@@ -3,29 +3,29 @@
 . ./settings
 
 # setup variables 
-if [ ${vscodeSettingsDir} = "" ]; then
-  vscodeSettingsDir=$(./defaultPath.sh);
+if [ -z ${vscodeSettingsDir} ]; then
+  vscodeSettingsDir=$(./defaultPath.sh ${os});
 fi
 
 vscodeSettingPath=${vscodeSettingsDir}/${vscodeSettingName}
 vscodeKeybindingPath=${vscodeSettingsDir}/${vscodeKeybindingName}
-vscodeLocalePath=${vscodeSettingsDir}/${vscodeSettingName}
+vscodeLocalePath=${vscodeSettingsDir}/${vscodeLocaleName}
 # end setup variables 
 
 # install
 if [ ${installSetting} -eq 1 ]; then
   echo "install setting"
-  mv ./${vscodeSettingSource} ${vscodeSettingPath}
+  cp ./${vscodeSettingSource} ${vscodeSettingPath}
 fi
 
 if [ ${installKeybinding} -eq 1 ]; then
   echo "install keybinding"
-  mv ./${vscodeKetbindingSource} ${vscodeKetbindingPath}
+  cp ./${vscodeKeybindingSource} ${vscodeKeybindingPath}
 fi
 
 if [ ${installLocale} -eq 1 ]; then
   echo "install locale"
-  mv ./${vscodeLocaleSource} ${vscodeLocalePath}
+  cp ./${vscodeLocaleSource} ${vscodeLocalePath}
 fi
 
 while read extension; do
