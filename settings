@@ -1,5 +1,3 @@
-os=linux
-
 vscodeSettingsDir=
 vscodeSettingName=settings.json
 vscodeKeybindingName=keybindings.json

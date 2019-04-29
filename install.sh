@@ -1,10 +1,16 @@
 #!/bin/sh
 
+if [ -z ${OS} ]; then
+  OS=$(uname -s);
+fi
+
+echo "detected OS: ${OS}"
+
 . ./settings
 
 # setup variables 
 if [ -z ${vscodeSettingsDir} ]; then
-  vscodeSettingsDir=$(./defaultPath.sh ${os});
+  vscodeSettingsDir=$(./defaultPath.sh ${OS});
 fi
 
 vscodeSettingPath=${vscodeSettingsDir}/${vscodeSettingName}

@@ -1,7 +1,9 @@
+OS ?= $(shell uname -s)
+
 include settings
 
 ifeq "${vscodeSettingsDir}" ''
-vscodeSettingsDir := $(shell ./defaultPath.sh ${os})
+vscodeSettingsDir := $(shell ./defaultPath.sh ${OS})
 endif
 
 vscodeSettingPath    := ${vscodeSettingsDir}/${vscodeSettingName}
@@ -10,15 +12,15 @@ vscodeLocalePath     := ${vscodeSettingsDir}/${vscodeLocaleName}
 
 vscodeSettingFiles := \
 	${vscodeSettingPath} \
-	${vscodeKeybindingPath} #\
+	${vscodeKeybindingPath} \
 	${vscodeLocalePath}
 
 .PHONY: default
 
-default: ${vscodeSettingFiles}
-	cp ${vscodeSettingPath} .
-	cp ${vscodeKeybindingPath} .
-	#cp ${vscodeLocalePath} .
+default:
+	cp "${vscodeSettingPath}" .
+	cp "${vscodeKeybindingPath}" .
+	cp "${vscodeLocalePath}" .
 
 install:
 	./install.sh

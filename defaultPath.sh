@@ -4,9 +4,9 @@ os=$1
 
 case ${os} in
 
-  linux   ) echo "${HOME}/.config/Code/User";;
-  windows ) echo "${APPDATA}\\Code\\User";;
-  macos   ) echo "${HOME}/Library/Application Support/Code/User";;
+  Linux       ) echo "${HOME}/.config/Code/User";;
+  Windows_NT  ) echo "${APPDATA}\\Code\\User";;
+  Darwin      ) echo "${HOME}/Library/Application Support/Code/User";;
 
 esac
 
