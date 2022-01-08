@@ -1,0 +1,17 @@
+[dir]
+vim   = "${HOME}"
+nvim  = ""
+
+[source]
+vimrc   = "Rcs/.vimrc"
+nvimrc  = "Rcs/init.vim"
+gnvimrc = "Rcs/ginit.vim"
+
+[target]
+vimrc   = ".vimrc"
+nvimrc  = "init.vim"
+gnvimrc = "ginit.vim"
+
+[pluginManager]
+install = true
+path    = "${HOME}/.vim/autoload"
