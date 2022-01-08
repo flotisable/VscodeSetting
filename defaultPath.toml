@@ -1,4 +1,4 @@
-[nvimDir]
-linux   = "${HOME}/.config/nvim"
-windows = "${env:LOCALAPPDATA}\\nvim"
-macos   = "${HOME}/.config/nvim"
+[targetDir]
+linux   = "./Test/Target/Linux"
+windows = "./Test/Target/Windows"
+macos   = "./Test/Target/Macos"

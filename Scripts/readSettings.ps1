@@ -98,7 +98,7 @@ Write-Host "detected OS: $os"
 $settings     = parseToml $settingFile
 $defaultPaths = parseToml $defaultPathFile
 
-If( $settings['dir']['nvim'] -eq "" )
+If( $settings['dir']['target'] -eq "" )
 {
-  $settings['dir']['nvim'] = $defaultPaths['nvimDir'][$os]
+  $settings['dir']['target'] = $defaultPaths['targetDir'][$os]
 }

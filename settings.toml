@@ -1,17 +1,8 @@
 [dir]
-vim   = "${HOME}"
-nvim  = ""
+target = ""
 
 [source]
-vimrc   = "Rcs/.vimrc"
-nvimrc  = "Rcs/init.vim"
-gnvimrc = "Rcs/ginit.vim"
+dataFile = "Test/Source/testSource.txt"
 
 [target]
-vimrc   = ".vimrc"
-nvimrc  = "init.vim"
-gnvimrc = "ginit.vim"
-
-[pluginManager]
-install = true
-path    = "${HOME}/.vim/autoload"
+dataFile = "testTarget.txt"

@@ -14,17 +14,7 @@ for target in $(mapKeys "$targetTableName"); do
   targetFile=$(mapFind "$targetTableName" "$target")
   sourceFile=$(mapFind "$sourceTableName" "$target")
 
-  if [ "$target" == "vimrc" ]; then
-
-    dirType="vim"
-
-  else
-
-    dirType="nvim"
-
-  fi
-
-  dir=$(mapFind "$dirTableName" "$dirType")
+  dir=$(mapFind "$dirTableName" "target")
 
   if [ -r "$dir/$targetFile" ]; then
 

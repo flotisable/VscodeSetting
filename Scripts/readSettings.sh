@@ -174,11 +174,11 @@ parseToml "$defaultPathFile"  "defaults"
 dirMapName=$(mapFind "settings" "dir")
 
 # set default values if the target is not set
-if [ -z "$(mapFind "$dirMapName" "nvim")" ]; then
+if [ -z "$(mapFind "$dirMapName" "target")" ]; then
 
-  nvimDirMapName=$(mapFind "defaults" "nvimDir")
+  targetDirMapName=$(mapFind "defaults" "targetDir")
 
-  mapSet "$dirMapName" "nvim" $(mapFind "$nvimDirMapName" "$os")
+  mapSet "$dirMapName" "target" $(mapFind "$targetDirMapName" "$os")
 
 fi
 # end set default values if the target is not set

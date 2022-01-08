@@ -15,28 +15,13 @@ removeFile()
 
 targetTableName=$(mapFind "settings" "target")
 dirTableName=$(mapFind "settings" "dir")
-pluginManagerTableName=$(mapFind "settings" "pluginManager")
 
 for target in $(mapKeys "$targetTableName"); do
 
   targetFile=$(mapFind "$targetTableName" "$target")
 
-  if [ "$target" == "vimrc" ]; then
-
-    dirType="vim"
-
-  else
-
-    dirType="nvim"
-
-  fi
-
-  dir=$(mapFind "$dirTableName" "$dirType")
+  dir=$(mapFind "$dirTableName" "target")
 
   removeFile $dir/$targetFile
 
 done
-
-if [ -e "$(mapFind "$pluginManagerTableName" "path")/plug.vim" ]; then
-  removeFile "$(mapFind "$pluginManagerTableName" "path")/plug.vim"
-fi
