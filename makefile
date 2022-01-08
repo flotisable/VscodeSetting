@@ -189,3 +189,11 @@ else
 	fi
 endif
 	@${MAKE} install --no-print-directory
+
+.PHONY: test
+test:
+ifeq "${OS}" "Windows_NT"
+	@powershell -NoProfile ./${scriptDir}/test.ps1
+else
+	@./${scriptDir}/test.sh
+endif
