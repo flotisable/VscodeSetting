@@ -5,6 +5,27 @@ Windows
 Macos
 "
 
+osNameToOsEnv()
+{
+  local os=$1
+  
+  case ${os} in
+
+    Linux)    export OS="Linux";;
+    Windows)  export OS="Windows_NT";;
+    Macos)    export OS="Darwin";;
+
+  esac
+}
+
+testMakefileTarget()
+{
+  local target=$1
+
+  echo "[Test makefile target '$target']"
+  make --no-print-directory $target
+}
+
 testDir="Test"
 sourceDir="${testDir}/Source"
 targetDir="${testDir}/Target"
@@ -14,21 +35,15 @@ mkdir -p ${sourceDir}
 
 for os in ${oses}; do
 
-  case ${os} in
-
-    Linux)    export OS="Linux";;
-    Windows)  export OS="Windows_NT";;
-    Macos)    export OS="Darwin";;
-
-  esac
+  osNameToOsEnv $os
 
   osTargetDir="${targetDir}/${os}"
 
   mkdir -p ${osTargetDir}
   touch ${osTargetDir}/${targetFile}
-  make --no-print-directory copy
-  make --no-print-directory uninstall
-  make --no-print-directory install
+  testMakefileTarget copy
+  testMakefileTarget uninstall
+  testMakefileTarget install
 
 done
 
