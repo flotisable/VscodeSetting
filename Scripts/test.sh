@@ -46,6 +46,7 @@ testInput()
   case $target in
 
     sync-main-from-local) echo ':qa';;
+    sync-to-local)        echo ':qa';;
 
   esac
 }

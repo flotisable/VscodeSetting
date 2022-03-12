@@ -163,18 +163,19 @@ Function syncToRemote()
 Function syncToLocal()
 {
   Write-Host "[Sync branch ${localBranch} to local machine]"
-  git checkout -q ${localBranch}
 
-  If( $LastExitCode -ne 0 )
-  {
-    exit 1
-  }
+  git stash -q
+  git checkout -q ${localBranch}
+  git stash apply -q
+  git mergetool
+
   If( "$(git diff-index HEAD)" -ne "" )
   {
     git add -i
     git checkout -p
   }
   & $scriptRoot/install.ps1
+  git stash drop -q
 }
 
 main $target

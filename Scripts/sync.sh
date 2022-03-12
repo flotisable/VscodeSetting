@@ -162,11 +162,11 @@ syncToRemote()
 syncToLocal()
 {
   echo "[Sync branch ${localBranch} to local machine]"
-  git checkout -q ${localBranch}
 
-  if [ $? -ne 0 ]; then
-    exit 1
-  fi
+  git stash -q
+  git checkout -q ${localBranch}
+  git stash apply -q
+  git mergetool
 
   if [ -n "$(git diff-index HEAD)" ]; then
 
@@ -175,6 +175,7 @@ syncToLocal()
 
   fi
   $scriptRoot/install.sh
+  git stash drop -q
 }
 
 main $target

@@ -19,7 +19,8 @@ Function testInput( $target )
 {
   Switch( $target )
   {
-    'sync-main-from-local' { Write-Output ':qa' }
+    'sync-main-from-local'  { Write-Output ':qa' }
+    'sync-to-local'         { Write-Output ':qa' }
   }
 }
 
