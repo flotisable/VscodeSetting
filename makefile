@@ -1,14 +1,6 @@
 OS ?= $(shell uname -s)
 
-GIT := git
-
 scriptDir := Scripts
-
-mainBranch       := master
-localBranch      := local
-remote           := $(shell ${GIT} config --get branch.${mainBranch}.remote)
-remoteBranch     := $(subst refs/heads/,,$(shell ${GIT} config --get branch.${mainBranch}.merge))
-remoteBranchFull := ${remote}/${remoteBranch}
 
 .PHONY: default
 default: copy
