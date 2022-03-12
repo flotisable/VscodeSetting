@@ -161,12 +161,26 @@ syncToRemote()
 
 syncToLocal()
 {
+  local isStashNeeded=0
+
   echo "[Sync branch ${localBranch} to local machine]"
 
-  git stash -q
+  if [ -n "$(git diff-index HEAD)" ]; then
+    isStashNeeded=1
+  fi
+
+  if [ $isStashNeeded -eq 1 ]; then
+    git stash -q
+  fi
+
   git checkout -q ${localBranch}
-  git stash apply -q
-  git mergetool
+
+  if [ $isStashNeeded -eq 1 ]; then
+
+    git stash apply -q
+    git mergetool
+
+  fi
 
   if [ -n "$(git diff-index HEAD)" ]; then
 
@@ -175,7 +189,10 @@ syncToLocal()
 
   fi
   $scriptRoot/install.sh
-  git stash drop -q
+
+  if [ $isStashNeeded -eq 1 ]; then
+    git stash drop -q
+  fi
 }
 
 main $target

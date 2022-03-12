@@ -162,12 +162,27 @@ Function syncToRemote()
 
 Function syncToLocal()
 {
+  $isStashNeeded = $False
+
   Write-Host "[Sync branch ${localBranch} to local machine]"
 
-  git stash -q
+  If( "$(git diff-index HEAD)" -ne "" )
+  {
+    $isStashNeeded = $True
+  }
+
+  If( $isStashNeeded )
+  {
+    git stash -q
+  }
+
   git checkout -q ${localBranch}
-  git stash apply -q
-  git mergetool
+
+  If( $isStashNeeded )
+  {
+    git stash apply -q
+    git mergetool
+  }
 
   If( "$(git diff-index HEAD)" -ne "" )
   {
@@ -175,7 +190,11 @@ Function syncToLocal()
     git checkout -p
   }
   & $scriptRoot/install.ps1
-  git stash drop -q
+
+  If( $isStashNeeded )
+  {
+    git stash drop -q
+  }
 }
 
 main $target
