@@ -1,9 +1,14 @@
 #!/bin/sh
 target=$1
 
+settingFile="./settings.toml"
+
 scriptRoot="$(dirname $(readlink -f $0))"
-mainBranch="main"
-localBranch="local"
+
+. ${scriptRoot}/readSettings.sh ${settingFile}
+
+mainBranch="$(mapFind $(mapFind 'settings' 'branch') 'main')"
+localBranch="$(mapFind $(mapFind 'settings' 'branch') 'local')"
 remote="$(git config --get branch.${mainBranch}.remote)"
 remoteBranch="$(git config --get branch.${mainBranch}.merge | sed 's:refs/heads/::')"
 remoteBranchFull="${remote}/${remoteBranch}"

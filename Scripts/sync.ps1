@@ -1,8 +1,12 @@
 Param( $target )
 
-$scriptRoot       = "$PSScriptRoot"
-$mainBranch       = "main"
-$localBranch      = "local"
+$settingFile  = "./settings.toml"
+$scriptRoot   = "$PSScriptRoot"
+
+. ${scriptRoot}/readSettings.ps1 $settingFile
+
+$mainBranch       = $settings['branch']['main']
+$localBranch      = $settings['branch']['local']
 $remote           = "$(git config --get branch.${mainBranch}.remote)"
 $remoteBranch     = "$(git config --get branch.${mainBranch}.merge)" -replace 'refs/heads', ''
 $remoteBranchFull = "${remote}/${remoteBranch}"

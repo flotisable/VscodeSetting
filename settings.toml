@@ -1,3 +1,7 @@
+[branch]
+main  = "main"
+local = "local"
+
 [dir]
 target = ""
 
