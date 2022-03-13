@@ -1,10 +1,55 @@
 #!/bin/sh
-oses="
-Linux
-Windows
-Macos
-"
+export GIT_EDITOR='cat'
 
+rootDir=$(pwd)
+testDir="${rootDir}/Test"
+sourceDir="${testDir}/Source"
+targetDir="${testDir}/Target"
+logDir="${testDir}/Logs"
+targetFile="testTarget.txt"
+isTestPass=1
+
+main()
+{
+  local oses="
+  Linux
+  Windows
+  Macos
+  "
+
+  local tests="
+  copy
+  uninstall
+  install
+  sync-main-to-local
+  sync-main-from-local
+  sync-to-local
+  "
+
+  mkdir -p ${sourceDir}
+  mkdir -p ${logDir}
+
+  for os in ${oses}; do
+  
+    osNameToOsEnv $os
+  
+    osTargetDir="${targetDir}/${os}"
+  
+    mkdir -p ${osTargetDir}
+    touch ${osTargetDir}/${targetFile}
+
+    for test in $tests; do
+      testMakefileTarget $test $os
+    done
+  
+  done
+  
+  if [ $isTestPass -eq 1 ]; then
+    rm -rf ${testDir}
+  fi
+}
+
+# test infrastructure
 osNameToOsEnv()
 {
   local os=$1
@@ -39,6 +84,32 @@ resetColor()
   fi
 }
 
+testMakefileTarget()
+{
+  local target=$1
+  local os=$2
+
+  local log="${logDir}/${target}_${os}.log"
+
+  prepareTest $target > $log 2>&1
+
+  echo "[Test makefile target '$target']"
+  testInput $target | make --no-print-directory $target > $log 2>&1
+
+  if [ $? -eq 0 ]; then
+    setPassColor
+    echo 'Test pass'
+    rm -f $log
+  else
+    setFailColor
+    echo 'Test fail'
+    isTestPass=0
+  fi
+  resetColor
+
+  cleanupTest $target
+}
+
 testInput()
 {
   local target=$1
@@ -51,39 +122,34 @@ testInput()
   esac
 }
 
-testMakefileTarget()
+prepareTest()
 {
   local target=$1
 
   case $target in
 
-    sync-main-to-local)   prepareTestSyncRemoteToLocal      > /dev/null 2>&1;;
-    sync-main-from-local) prepareTestSyncMainFromLocal      > /dev/null 2>&1;;
-    sync-to-local)        prepareTestSyncMainToLocalMachine > /dev/null 2>&1;;
-
-  esac
-
-  echo "[Test makefile target '$target']"
-  testInput $target | make --no-print-directory $target > /dev/null 2>&1
-
-  if [ $? -eq 0 ]; then
-    setPassColor
-    echo 'Test pass'
-  else
-    setFailColor
-    echo 'Test fail'
-  fi
-  resetColor
-
-  case $target in
-
-    sync-main-to-local)   cleanupTestSyncRemoteToLocal;;
-    sync-main-from-local) cleanupTestSyncMainFromLocal;;
-    sync-to-local)        cleanupTestSyncMainToLocalMachine;;
+    sync-main-to-local)   prepareTestSyncRemoteToLocal;;
+    sync-main-from-local) prepareTestSyncMainFromLocal;;
+    sync-to-local)        prepareTestSyncMainToLocalMachine;;
 
   esac
 }
 
+cleanupTest()
+{
+  local target=$1
+
+  case $target in
+
+    *) ;;
+
+  esac
+
+  cd ${rootDir}
+}
+# end test infrastructure
+
+# individual test settings
 prepareTestSyncRemoteToLocal()
 {
   git clone . ${osTargetDir}/remote
@@ -112,11 +178,6 @@ prepareTestSyncRemoteToLocal()
   git commit -am 'change remote branch'
 }
 
-cleanupTestSyncRemoteToLocal()
-{
-  cd ${rootDir}
-}
-
 prepareTestSyncMainFromLocal()
 {
   git clone . ${osTargetDir}/main
@@ -134,11 +195,6 @@ prepareTestSyncMainFromLocal()
   git commit -am 'change remote branch'
   git checkout local
   sed -i '/remoteBranch\s\+:=/ s/remoteLocal/remoteLocalForStash/' makefile
-}
-
-cleanupTestSyncMainFromLocal()
-{
-  cd ${rootDir}
 }
 
 prepareTestSyncMainToLocalMachine()
@@ -162,37 +218,6 @@ prepareTestSyncMainToLocalMachine()
   git checkout main
   sed -i '/remoteBranch\s\+:=/ s/remoteMain/main/' makefile
 }
+# end individual test settings
 
-cleanupTestSyncMainToLocalMachine()
-{
-  cd ${rootDir}
-}
-
-export GIT_EDITOR='cat'
-
-testDir="Test"
-sourceDir="${testDir}/Source"
-targetDir="${testDir}/Target"
-targetFile="testTarget.txt"
-rootDir=$(pwd)
-
-mkdir -p ${sourceDir}
-
-for os in ${oses}; do
-
-  osNameToOsEnv $os
-
-  osTargetDir="${targetDir}/${os}"
-
-  mkdir -p ${osTargetDir}
-  touch ${osTargetDir}/${targetFile}
-  testMakefileTarget copy
-  testMakefileTarget uninstall
-  testMakefileTarget install
-  testMakefileTarget sync-main-to-local
-  testMakefileTarget sync-main-from-local
-  testMakefileTarget sync-to-local
-
-done
-
-rm -rf ${testDir}
+main

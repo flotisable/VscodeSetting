@@ -1,10 +1,52 @@
-$oses = "Linux",
-        "Windows",
-        "Macos"
-
 Set-Variable -Option Constant passColor 'Green'
 Set-Variable -Option Constant failColor 'Red'
 
+$env:GIT_EDITOR = 'powershell -NoProfile -Command Write-Host'
+$rootDir        = Get-Location
+$testDir        = "${rootDir}/Test"
+$sourceDir      = "${testDir}/Source"
+$targetDir      = "${testDir}/Target"
+$logDir         = "${testDir}/Logs"
+$targetFile     = "testTarget.txt"
+$isTestPass     = $True
+
+Function main()
+{
+  $oses = "Linux",
+          "Windows",
+          "Macos"
+
+  $tests =  "copy",
+            "uninstall",
+            "install",
+            "sync-main-to-local",
+            "sync-main-from-local",
+            "sync-to-local"
+
+  New-Item -ItemType Directory -Force ${sourceDir}  > $null
+  New-Item -ItemType Directory -Force ${logDir}     > $null
+  
+  ForEach( $os in ${oses} )
+  {
+    osNameToOsEnv $os
+  
+    $osTargetDir = "${targetDir}/${os}"
+  
+    New-Item -ItemType Directory -Force ${osTargetDir}  > $null
+    New-Item -Force ${osTargetDir}/${targetFile}        > $null
+
+    ForEach( $test in $tests )
+    {
+      testMakefileTarget $test $os
+    }
+  }
+  If( $isTestPass )
+  {
+    Remove-Item -Recurse -Force ${testDir}
+  }
+}
+
+# test infrastructures
 Function osNameToOsEnv( $os )
 {
   Switch( ${os} )
@@ -13,6 +55,28 @@ Function osNameToOsEnv( $os )
     "Windows"  { $env:OS = "Windows_NT" }
     "Macos"    { $env:OS = "Darwin"     }
   }
+}
+
+Function testMakefileTarget( $target, $os )
+{
+  $log = "${logDir}/${target}_${os}.log"
+
+  prepareTest $target > $log 2>&1
+
+  Write-Host "[Test makefile target '$target']"
+  testInput $target | make --no-print-directory $target > $log 2>&1
+
+  If( $LastExitCode -eq 0 )
+  {
+    Write-Host -ForegroundColor $passColor 'Test pass'
+    Remove-Item -Force $log
+  }
+  Else
+  {
+    Write-Host -ForegroundColor $failColor 'Test fail'
+    $isTestPass = $False
+  }
+  cleanupTest
 }
 
 Function testInput( $target )
@@ -24,35 +88,27 @@ Function testInput( $target )
   }
 }
 
-Function testMakefileTarget( $target )
+Function prepareTest( $target )
 {
   Switch( $target )
   {
-    'sync-main-to-local'    { prepareTestSyncRemoteToLocal      > $null 2>&1 }
-    'sync-main-from-local'  { prepareTestSyncMainFromLocal      > $null 2>&1 }
-    'sync-to-local'         { prepareTestSyncMainToLocalMachine > $null 2>&1 }
-  }
-
-  Write-Host "[Test makefile target '$target']"
-  testInput $target | make --no-print-directory $target > $null 2>&1
-
-  If( $LastExitCode -eq 0 )
-  {
-    Write-Host -ForegroundColor $passColor 'Test pass'
-  }
-  Else
-  {
-    Write-Host -ForegroundColor $failColor 'Test fail'
-  }
-
-  Switch( $target )
-  {
-    'sync-main-to-local'    { cleanupTestSyncRemoteToLocal      }
-    'sync-main-from-local'  { cleanupTestSyncMainFromLocal      }
-    'sync-to-local'         { cleanupTestSyncMainToLocalMachine }
+    'sync-main-to-local'    { prepareTestSyncRemoteToLocal      }
+    'sync-main-from-local'  { prepareTestSyncMainFromLocal      }
+    'sync-to-local'         { prepareTestSyncMainToLocalMachine }
   }
 }
 
+Function cleanupTest( $target )
+{
+  Switch( $target )
+  {
+    Default {}
+  }
+  Set-Location ${rootDir}
+}
+# end test infrastructures
+
+# individual test settings
 Function prepareTestSyncRemoteToLocal()
 {
   git clone . ${osTargetDir}/remote
@@ -82,11 +138,6 @@ Function prepareTestSyncRemoteToLocal()
   git commit -am 'change remote branch'
 }
 
-Function cleanupTestSyncRemoteToLocal()
-{
-  Set-Location ${rootDir}
-}
-
 Function prepareTestSyncMainFromLocal()
 {
   git clone . ${osTargetDir}/main
@@ -104,11 +155,6 @@ Function prepareTestSyncMainFromLocal()
   git commit -am 'change remote branch'
   git checkout local
   $(Get-Content makefile) -replace '(remoteBranch\s+:=\s+)remoteLocal', '${1}remoteLocalForStash' | Set-Content makefile
-}
-
-Function cleanupTestSyncMainFromLocal()
-{
-  Set-Location ${rootDir}
 }
 
 Function prepareTestSyncMainToLocalMachine()
@@ -132,34 +178,6 @@ Function prepareTestSyncMainToLocalMachine()
   git checkout main
   $(Get-Content makefile) -replace '(remoteBranch\s+:=\s+)remoteMain', '${1}main' | Set-Content makefile
 }
+# end individual test settings
 
-Function cleanupTestSyncMainToLocalMachine()
-{
-  Set-Location ${rootDir}
-}
-
-$env:GIT_EDITOR = 'powershell -NoProfile -Command Write-Host'
-$testDir        = "Test"
-$sourceDir      = "${testDir}/Source"
-$targetDir      = "${testDir}/Target"
-$targetFile     = "testTarget.txt"
-$rootDir        = Get-Location
-
-New-Item -ItemType Directory -Force ${sourceDir} > $null
-
-ForEach( $os in ${oses} )
-{
-  osNameToOsEnv $os
-
-  $osTargetDir = "${targetDir}/${os}"
-
-  New-Item -ItemType Directory -Force ${osTargetDir} > $null
-  New-Item ${osTargetDir}/${targetFile} > $null
-  testMakefileTarget copy
-  testMakefileTarget uninstall
-  testMakefileTarget install
-  testMakefileTarget sync-main-to-local
-  testMakefileTarget sync-main-from-local
-  testMakefileTarget sync-to-local
-}
-Remove-Item -Recurse -Force ${testDir}
+main
