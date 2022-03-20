@@ -27,6 +27,7 @@ main()
       ;;
     sync-main-from-local)
       syncFromLocal
+      syncMainFromLocal
       ;;
     sync-to-local)
       syncToLocal
@@ -36,6 +37,7 @@ main()
       syncMainToLocal
 
       syncFromLocal
+      syncMainFromLocal
 
       syncToRemote
 

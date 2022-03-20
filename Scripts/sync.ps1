@@ -25,6 +25,7 @@ Function main( $target )
     'sync-main-from-local'
     {
       syncFromLocal
+      syncMainFromLocal
     }
     'sync-to-local'
     {
@@ -36,6 +37,7 @@ Function main( $target )
       syncMainToLocal
 
       syncFromLocal
+      syncMainFromLocal
 
       syncToRemote
 
