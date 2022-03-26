@@ -1,0 +1,14 @@
+#+CATEGORY: SharedData
+
+* v1.0.0
+* Unplanned
+** TODO fix powershell sync script
+** TODO check test results by output texts [0/7]
+*** TODO target copy
+*** TODO target uninstall
+*** TODO target install
+*** TODO target sync-main-to-local
+*** TODO target sync-main-from-local
+*** TODO target sync-to-local
+** TODO add init make target
+   - to remove files or settings only for develop this template repository
