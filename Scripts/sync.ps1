@@ -64,16 +64,17 @@ Function syncMainToLocal()
   }
   If( "$(git diff-tree ${mainBranch} ${localBranch})" -eq "" )
   {
-    Write-Host "[Sync branch ${mainBranch} to branch ${localBranch}]"
-    git merge ${mainBranch}
-    git mergetool
-
-    If( "$(git diff-index --cached HEAD)" -eq "" )
-    {
-      return
-    }
-    git commit
+    return
   }
+  Write-Host "[Sync branch ${mainBranch} to branch ${localBranch}]"
+  git merge ${mainBranch}
+  git mergetool
+
+  If( "$(git diff-index --cached HEAD)" -eq "" )
+  {
+    return
+  }
+  git commit
 }
 
 Function syncFromRemote()

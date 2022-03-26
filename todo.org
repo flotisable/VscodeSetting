@@ -2,7 +2,8 @@
 
 * v1.0.0
 * Unplanned
-** TODO fix powershell sync script
+** DONE fix powershell sync script
+   CLOSED: [2022-03-26 Sat 17:32] SCHEDULED: <2022-03-26 Sat>
 ** TODO check test results by output texts [0/7]
 *** TODO target copy
 *** TODO target uninstall
