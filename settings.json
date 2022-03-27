@@ -9,8 +9,14 @@
 
   "window.zoomLevel": 1,
   "workbench.activityBar.visible": false,
-  "workbench.colorTheme": "DesertEx",
   "extensions.ignoreRecommendations": false,
   "vim.disableAnnoyingNeovimMessage": true,
-  "vim.disableExtension": false
+  "vim.disableExtension": false,
+  "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
+  "workbench.colorTheme": "Nord",
+  "editor.fontFamily": "'Hack', 'DejaVu Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+  "editor.minimap.enabled": false,
+  "window.menuBarVisibility": "toggle",
+  "window.newWindowDimensions": "maximized",
+  "window.closeWhenEmpty": true
 }
