@@ -1,26 +1,62 @@
 OS ?= $(shell uname -s)
 
-include settings
-
-ifeq "${vscodeSettingsDir}" ''
-vscodeSettingsDir := $(shell ./defaultPath.sh ${OS})
-endif
-
-vscodeSettingPath    := ${vscodeSettingsDir}/${vscodeSettingName}
-vscodeKeybindingPath := ${vscodeSettingsDir}/${vscodeKeybindingName}
-vscodeLocalePath     := ${vscodeSettingsDir}/${vscodeLocaleName}
-
-vscodeSettingFiles := \
-	${vscodeSettingPath} \
-	${vscodeKeybindingPath} \
-	${vscodeLocalePath}
+scriptDir := Scripts
 
 .PHONY: default
+default: copy
 
-default:
-	cp "${vscodeSettingPath}" .
-	cp "${vscodeKeybindingPath}" .
-	cp "${vscodeLocalePath}" .
+.PHONY: copy
+copy:
+ifeq "${OS}" "Windows_NT"
+	@powershell -NoProfile ./${scriptDir}/copy.ps1
+else
+	@./${scriptDir}/copy.sh
+endif
 
+.PHONY: install
 install:
-	./install.sh
+ifeq "${OS}" "Windows_NT"
+	@powershell -NoProfile ./${scriptDir}/install.ps1
+else
+	@./${scriptDir}/install.sh
+endif
+
+.PHONY: uninstall
+uninstall:
+ifeq "${OS}" "Windows_NT"
+	@powershell -NoProfile ./${scriptDir}/uninstall.ps1
+else
+	@./${scriptDir}/uninstall.sh
+endif
+
+.PHONY: sync
+sync:
+ifeq "${OS}" "Windows_NT"
+	@powershell -NoProfile ./${scriptDir}/sync.ps1
+else
+	@./${scriptDir}/sync.sh
+endif
+
+.PHONY: sync-main-to-local
+sync-main-to-local:
+ifeq "${OS}" "Windows_NT"
+	@powershell -NoProfile ./${scriptDir}/sync.ps1 $@
+else
+	@./${scriptDir}/sync.sh $@
+endif
+
+.PHONY: sync-main-from-local
+sync-main-from-local:
+ifeq "${OS}" "Windows_NT"
+	@powershell -NoProfile ./${scriptDir}/sync.ps1 $@
+else
+	@./${scriptDir}/sync.sh $@
+endif
+
+.PHONY: sync-to-local
+sync-to-local:
+ifeq "${OS}" "Windows_NT"
+	@powershell -NoProfile ./${scriptDir}/sync.ps1 $@
+else
+	@./${scriptDir}/sync.sh $@
+endif

@@ -1,0 +1,16 @@
+[branch]
+main  = "main"
+local = "local"
+
+[dir]
+target = ""
+
+[source]
+setting     = "settings.json"
+keybinding  = "keybindings.json"
+locale      = "locale.json"
+
+[target]
+setting     = "settings.json"
+keybinding  = "keybindings.json"
+locale      = "locale.json"
