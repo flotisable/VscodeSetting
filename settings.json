@@ -18,5 +18,6 @@
   "editor.minimap.enabled": false,
   "window.menuBarVisibility": "toggle",
   "window.newWindowDimensions": "maximized",
-  "window.closeWhenEmpty": true
+  "window.closeWhenEmpty": true,
+  "vscode-neovim.neovimExecutablePaths.win32": "C:\\tools\\neovim\\Neovim\\bin\\nvim.exe"
 }
