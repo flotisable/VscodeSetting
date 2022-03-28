@@ -1,5 +1,5 @@
 [branch]
-main  = "main"
+main  = "master"
 local = "local"
 
 [dir]
