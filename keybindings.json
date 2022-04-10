@@ -1,7 +1,43 @@
 // 將您的按鍵組合放入此檔案中以覆寫預設值
 [
   {
-    "key": "alt+v alt+v",
-    "command": "toggleVim"
+    "key": "ctrl+s",
+    "command": "workbench.action.files.save",
+    "when": "!neovim.init"
+  },
+  {
+    "key": "ctrl+s",
+    "command": "-workbench.action.files.save"
+  },
+  {
+    "key": "ctrl+s",
+    "command": "vscode-neovim.send",
+    "when": "neovim.init",
+    "args": "<C-s>"
+  },
+  {
+    "key": "ctrl+s",
+    "command": "workbench.action.terminal.toggleTerminal",
+    "when": "neovim.init && terminal.active"
+  },
+  {
+    "key": "ctrl+x",
+    "command": "filesExplorer.cut",
+    "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus && !neovim.init"
+  },
+  {
+    "key": "ctrl+x",
+    "command": "-filesExplorer.cut",
+    "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
+  },
+  {
+    "key": "ctrl+x",
+    "command": "workbench.view.explorer",
+    "when": "viewContainer.workbench.view.explorer.enabled && neovim.init"
+  },
+  {
+    "key": "ctrl+x",
+    "command": "workbench.action.toggleSidebarVisibility",
+    "when": "explorerViewletVisible && neovim.init"
   }
 ]
