@@ -6,65 +6,43 @@ PERL      := perl
 
 scriptDir := Scripts
 
+ifeq "${OS}" "Windows_NT"
+	runScript = ${PWSH} ${PWSHFLAGS} ./${scriptDir}/${1}.ps1 ${2}
+else
+	runScript = ./${scriptDir}/${1}.sh ${2}
+endif
+
 .PHONY: default
 default: copy
 
 .PHONY: copy
 copy:
-ifeq "${OS}" "Windows_NT"
-	@${PWSH} ${PWSHFLAGS} ./${scriptDir}/copy.ps1
-else
-	@./${scriptDir}/copy.sh
-endif
+	@$(call runScript,$@,)
 
 .PHONY: install
 install:
-ifeq "${OS}" "Windows_NT"
-	@${PWSH} ${PWSHFLAGS} ./${scriptDir}/install.ps1
-else
-	@./${scriptDir}/install.sh
-endif
+	@$(call runScript,$@,)
 
 .PHONY: uninstall
 uninstall:
-ifeq "${OS}" "Windows_NT"
-	@${PWSH} ${PWSHFLAGS} ./${scriptDir}/uninstall.ps1
-else
-	@./${scriptDir}/uninstall.sh
-endif
+	@$(call runScript,$@,)
 
 .PHONY: sync
 sync:
-ifeq "${OS}" "Windows_NT"
-	@${PWSH} ${PWSHFLAGS} ./${scriptDir}/sync.ps1
-else
-	@./${scriptDir}/sync.sh
-endif
+	@$(call runScript,$@,)
 
 .PHONY: sync-main-to-local
 sync-main-to-local:
-ifeq "${OS}" "Windows_NT"
-	@${PWSH} ${PWSHFLAGS} ./${scriptDir}/sync.ps1 $@
-else
-	@./${scriptDir}/sync.sh $@
-endif
+	@$(call runScript,sync,$@)
 
 .PHONY: sync-main-from-local
 sync-main-from-local:
-ifeq "${OS}" "Windows_NT"
-	@${PWSH} ${PWSHFLAGS} ./${scriptDir}/sync.ps1 $@
-else
-	@./${scriptDir}/sync.sh $@
-endif
+	@$(call runScript,sync,$@)
 
 .PHONY: sync-to-local
 sync-to-local:
-ifeq "${OS}" "Windows_NT"
-	@${PWSH} ${PWSHFLAGS} ./${scriptDir}/sync.ps1 $@
-else
-	@./${scriptDir}/sync.sh $@
-endif
+	@$(call runScript,sync,$@)
 
 .PHONY: test
 test:
-	@${PERL} ${scriptDir}/test.pl
+	@${PERL} ./${scriptDir}/test.pl
