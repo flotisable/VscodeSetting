@@ -2,6 +2,7 @@ OS ?= $(shell uname -s)
 
 PWSH      := powershell
 PWSHFLAGS := -NoProfile
+PERL      := perl
 
 scriptDir := Scripts
 
@@ -66,8 +67,4 @@ endif
 
 .PHONY: test
 test:
-ifeq "${OS}" "Windows_NT"
-	@${PWSH} ${PWSHFLAGS} ./${scriptDir}/test.ps1
-else
-	@./${scriptDir}/test.sh
-endif
+	@${PERL} ${scriptDir}/test.pl
