@@ -9,6 +9,7 @@ use Term::ANSIColor;
 use File::Temp;
 use File::Copy;
 use Cwd               qw/getcwd abs_path/;
+use File::Spec;
 
 $ENV{GIT_EDITOR} = 'cat';
 
@@ -50,20 +51,48 @@ sub main
   make_path( @{paths}{qw/sourceDir logDir/} );
 
   for my $os ( @oses )
-  { 
+  {
+    print "OS $os can not be tested, skip\n" and next unless isOsTestable( $os );
+    print "Test OS $os\n";
+
     osNameToOsEnv( $os );
-  
+
     $paths{osTargetDir} = "$paths{targetDir}/${os}";
-  
+
     make_path( $paths{osTargetDir} );
     open $fh, '>', "$paths{osTargetDir}/${targetFile}" and close $fh;
 
     testMakefileTarget( $_, $os ) for @tests;
   }
   remove_tree( $paths{testDir} ) if $isTestPass;
+
+  return 0;
 }
 
 # test infrastructure
+sub getOsExpectedShell
+{
+  my $os = shift;
+
+  my %osMap = (
+                Linux   => 'sh',
+                Windows => 'powershell',
+                Macos   => 'sh',
+              );
+
+  return $osMap{$os} // '';
+}
+
+sub isOsTestable
+{
+  my $os = shift;
+
+  my $shell   = getOsExpectedShell( $os );
+  my $devNull = File::Spec->devnull();
+
+  return ( system "$shell -help > $devNull 2>&1" )? 0: 1;
+}
+
 sub osNameToOsEnv
 {
   my $os = shift;
