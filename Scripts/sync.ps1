@@ -8,7 +8,7 @@ $scriptRoot   = "$PSScriptRoot"
 $mainBranch       = $settings['branch']['main']
 $localBranch      = $settings['branch']['local']
 $remote           = "$(git config --get branch.${mainBranch}.remote)"
-$remoteBranch     = "$(git config --get branch.${mainBranch}.merge)" -replace 'refs/heads', ''
+$remoteBranch     = "$(git config --get branch.${mainBranch}.merge)" -replace 'refs/heads/', ''
 $remoteBranchFull = "${remote}/${remoteBranch}"
 
 Function main( $target )
