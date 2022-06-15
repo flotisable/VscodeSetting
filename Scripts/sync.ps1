@@ -41,6 +41,7 @@ Function main( $target )
 
       syncToRemote
 
+      syncMainToLocal
       syncToLocal
     }
   }

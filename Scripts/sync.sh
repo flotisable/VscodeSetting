@@ -41,6 +41,7 @@ main()
 
       syncToRemote
 
+      syncMainToLocal
       syncToLocal
       ;;
 
