@@ -13,3 +13,4 @@
 *** TODO target sync-to-local
 ** TODO add init make target
    - to remove files or settings only for develop this template repository
+** TODO support different directory for different target
