@@ -8,7 +8,7 @@ $scriptRoot   = "$PSScriptRoot"
 $mainBranch       = $settings['branch']['main']
 $localBranch      = $settings['branch']['local']
 $remote           = "$(git config --get branch.${mainBranch}.remote)"
-$remoteBranch     = "$(git config --get branch.${mainBranch}.merge)" -replace 'refs/heads', ''
+$remoteBranch     = "$(git config --get branch.${mainBranch}.merge)" -replace 'refs/heads/', ''
 $remoteBranchFull = "${remote}/${remoteBranch}"
 
 Function main( $target )
@@ -41,6 +41,7 @@ Function main( $target )
 
       syncToRemote
 
+      syncMainToLocal
       syncToLocal
     }
   }
@@ -64,16 +65,17 @@ Function syncMainToLocal()
   }
   If( "$(git diff-tree ${mainBranch} ${localBranch})" -eq "" )
   {
-    Write-Host "[Sync branch ${mainBranch} to branch ${localBranch}]"
-    git merge ${mainBranch}
-    git mergetool
-
-    If( "$(git diff-index --cached HEAD)" -eq "" )
-    {
-      return
-    }
-    git commit
+    return
   }
+  Write-Host "[Sync branch ${mainBranch} to branch ${localBranch}]"
+  git merge ${mainBranch}
+  git mergetool
+
+  If( "$(git diff-index --cached HEAD)" -eq "" )
+  {
+    return
+  }
+  git commit
 }
 
 Function syncFromRemote()

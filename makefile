@@ -1,62 +1,44 @@
 OS ?= $(shell uname -s)
 
+PWSH      := powershell
+PWSHFLAGS := -NoProfile
+PERL      := perl
+
 scriptDir := Scripts
+
+ifeq "${OS}" "Windows_NT"
+	runScript = ${PWSH} ${PWSHFLAGS} ./${scriptDir}/${1}.ps1 ${2}
+else
+	runScript = ./${scriptDir}/${1}.sh ${2}
+endif
 
 .PHONY: default
 default: copy
 
 .PHONY: copy
 copy:
-ifeq "${OS}" "Windows_NT"
-	@powershell -NoProfile ./${scriptDir}/copy.ps1
-else
-	@./${scriptDir}/copy.sh
-endif
+	@$(call runScript,$@,)
 
 .PHONY: install
 install:
-ifeq "${OS}" "Windows_NT"
-	@powershell -NoProfile ./${scriptDir}/install.ps1
-else
-	@./${scriptDir}/install.sh
-endif
+	@$(call runScript,$@,)
 
 .PHONY: uninstall
 uninstall:
-ifeq "${OS}" "Windows_NT"
-	@powershell -NoProfile ./${scriptDir}/uninstall.ps1
-else
-	@./${scriptDir}/uninstall.sh
-endif
+	@$(call runScript,$@,)
 
 .PHONY: sync
 sync:
-ifeq "${OS}" "Windows_NT"
-	@powershell -NoProfile ./${scriptDir}/sync.ps1
-else
-	@./${scriptDir}/sync.sh
-endif
+	@$(call runScript,$@,)
 
 .PHONY: sync-main-to-local
 sync-main-to-local:
-ifeq "${OS}" "Windows_NT"
-	@powershell -NoProfile ./${scriptDir}/sync.ps1 $@
-else
-	@./${scriptDir}/sync.sh $@
-endif
+	@$(call runScript,sync,$@)
 
 .PHONY: sync-main-from-local
 sync-main-from-local:
-ifeq "${OS}" "Windows_NT"
-	@powershell -NoProfile ./${scriptDir}/sync.ps1 $@
-else
-	@./${scriptDir}/sync.sh $@
-endif
+	@$(call runScript,sync,$@)
 
 .PHONY: sync-to-local
 sync-to-local:
-ifeq "${OS}" "Windows_NT"
-	@powershell -NoProfile ./${scriptDir}/sync.ps1 $@
-else
-	@./${scriptDir}/sync.sh $@
-endif
+	@$(call runScript,sync,$@)
