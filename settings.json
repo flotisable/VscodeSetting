@@ -19,5 +19,6 @@
   "window.menuBarVisibility": "toggle",
   "window.newWindowDimensions": "maximized",
   "window.closeWhenEmpty": true,
-  "vscode-neovim.neovimExecutablePaths.win32": "C:\\tools\\neovim\\Neovim\\bin\\nvim.exe"
+  "vscode-neovim.neovimExecutablePaths.win32": "C:\\tools\\neovim\\nvim-win64\\bin\\nvim.exe",
+  "C_Cpp.intelliSenseEngine": "Disabled"
 }
