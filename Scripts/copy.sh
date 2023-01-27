@@ -5,22 +5,20 @@ scriptDir="$(dirname $0)"
 
 . ${scriptDir}/readSettings.sh ${settingFile}
 
-targetTableName=$(mapFind "settings" "target")
-sourceTableName=$(mapFind "settings" "source")
 dirTableName=$(mapFind "settings" "dir")
 
-for target in $(mapKeys "$targetTableName"); do
+root=$(mapFind "$dirTableName" "root")
 
-  targetFile=$(mapFind "$targetTableName" "$target")
-  sourceFile=$(mapFind "$sourceTableName" "$target")
+for file in $(find -L "Settings/$os" -type f -printf '%P\n'); do
 
-  dir=$(mapFind "$dirTableName" "target")
+  targetFile="$root/$file"
+  sourceFile="Settings/$os/$file"
 
-  if [ -r "$dir/$targetFile" ]; then
-
-    echo "copy $dir/$targetFile to $sourceFile"
-    cp $dir/$targetFile $sourceFile
-
+  if [ ! -r "$targetFile" ]; then
+    continue
   fi
+
+  echo "copy $targetFile to $sourceFile"
+  cp $targetFile $sourceFile
 
 done

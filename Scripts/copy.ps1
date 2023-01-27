@@ -4,16 +4,20 @@ $scriptDir = "$(Split-Path $PSCommandPath)"
 
 . ${scriptDir}/readSettings.ps1 $settingFile
 
-ForEach( $target in $settings['target'].keys )
-{
-  $targetFile = Invoke-Expression "Write-Output $($settings['target'][$target])"
-  $sourceFile = Invoke-Expression "Write-Output $($settings['source'][$target])"
-  $dir        = Invoke-Expression "Write-Output $($settings['dir']['target'])"
+$root           = Invoke-Expression "Write-Output $($settings['dir']['root'])"
+$rcRoot         = ( Get-Item ${scriptDir}/../Settings/$os ).FullName
+$rcRootPattern  = "$( $rcRoot -replace '\\', '\\' )\\"
 
-  If( !( Get-Item -Force -ErrorAction SilentlyContinue $dir/$targetFile ) )
+ForEach( $file in ( Get-ChildItem -Recurse -File $rcRoot ).FullName )
+{
+  $file       = $file -replace $rcRootPattern, ""
+  $sourceFile = "$rcRoot/$file"
+  $targetFile = "$root/$file"
+
+  If( !( Get-Item -Force -ErrorAction SilentlyContinue $targetFile ) )
   {
     Continue
   }
-  Write-Host "copy $dir/$targetFile to $sourceFile"
-  Copy-Item $dir/$targetFile $sourceFile
+  Write-Host "copy $targetFile to $sourceFile"
+  Copy-Item $targetFile $sourceFile
 }

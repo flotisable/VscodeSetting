@@ -11,26 +11,34 @@ installFile()
   local targetFile=$2
   local fileMessage=$3
 
+  local dir
+  dir="$(dirname $targetFile)"
+
+  mkdir -vp $dir  
   echo "install $fileMessage"
   cp $sourceFile $targetFile 
 }
 
-targetTableName=$(mapFind "settings" "target")
-sourceTableName=$(mapFind "settings" "source")
 dirTableName=$(mapFind "settings" "dir")
 
-for target in $(mapKeys "$targetTableName"); do
+root=$(mapFind "$dirTableName" "root")
 
-  targetFile=$(mapFind "$targetTableName" "$target")
-  sourceFile=$(mapFind "$sourceTableName" "$target")
+for file in $(find -L "Settings/$os" -type f -printf '%P\n'); do
 
-  dir=$(mapFind "$dirTableName" "target")
+  targetFile="$root/$file"
+  sourceFile="Settings/$os/$file"
 
-  installFile $sourceFile $dir/$targetFile $target
+
+  installFile $sourceFile $targetFile $file
 
 done
+
+if ! which code > /dev/null 2>&1; then
+  echo "Warning: can not run vscode to install extension"
+  exit
+fi
 
 while read extension; do
   echo "install ${extension}";
   code --install-extension ${extension}
-done < extensions
+done < Settings/Root/extensions

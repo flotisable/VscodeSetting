@@ -10,18 +10,18 @@ removeFile()
   local file=$1
 
   echo "remove $file"
-  rm $file
+  rm -f $file
 }
 
-targetTableName=$(mapFind "settings" "target")
 dirTableName=$(mapFind "settings" "dir")
 
-for target in $(mapKeys "$targetTableName"); do
+root=$(mapFind "$dirTableName" "root")
 
-  targetFile=$(mapFind "$targetTableName" "$target")
+for file in $(find -L "Settings/$os" -type f -printf '%P\n'); do
 
-  dir=$(mapFind "$dirTableName" "target")
+  targetFile="$root/$file"
+  sourceFile="Settings/$os/$file"
 
-  removeFile $dir/$targetFile
+  removeFile $targetFile
 
 done

@@ -1,4 +1,0 @@
-[targetDir]
-linux   = "${HOME}/.config/Code/User"
-windows = "${env:APPDATA}\\Code\\User"
-macos   = "${HOME}/Library/Application Support/Code/User"
