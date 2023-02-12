@@ -39,5 +39,21 @@
     "key": "ctrl+x",
     "command": "workbench.action.toggleSidebarVisibility",
     "when": "explorerViewletVisible && neovim.init"
+  },
+  {
+    "key": "ctrl+w k",
+    "command": "workbench.action.focusAboveGroup"
+  },
+  {
+    "key": "ctrl+w j",
+    "command": "workbench.action.focusBelowGroup"
+  },
+  {
+    "key": "ctrl+w l",
+    "command": "workbench.action.focusRightGroup"
+  },
+  {
+    "key": "ctrl+w h",
+    "command": "workbench.action.focusLeftGroup"
   }
 ]
