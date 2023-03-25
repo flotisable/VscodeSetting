@@ -8,7 +8,7 @@ $root           = Invoke-Expression "Write-Output $($settings['dir']['root'])"
 $rcRoot         = ( Get-Item ${scriptDir}/../Settings/$os ).FullName
 $rcRootPattern  = "$( $rcRoot -replace '\\', '\\' )\\"
 
-ForEach( $file in ( Get-ChildItem -Recurse -File $rcRoot ).FullName )
+ForEach( $file in ( Get-ChildItem -Recurse -FollowSymlink -File $rcRoot ).FullName )
 {
   $file       = $file -replace $rcRootPattern, ""
   $sourceFile = "$rcRoot/$file"
