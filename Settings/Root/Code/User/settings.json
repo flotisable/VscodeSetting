@@ -8,7 +8,6 @@
   },
 
   "window.zoomLevel": 1,
-  "workbench.activityBar.visible": false,
   "extensions.ignoreRecommendations": false,
   "vim.disableAnnoyingNeovimMessage": true,
   "vim.disableExtension": false,
@@ -20,5 +19,9 @@
   "window.newWindowDimensions": "maximized",
   "window.closeWhenEmpty": true,
   "vscode-neovim.neovimExecutablePaths.win32": "C:\\tools\\neovim\\nvim-win64\\bin\\nvim.exe",
-  "C_Cpp.intelliSenseEngine": "Disabled"
+  "C_Cpp.intelliSenseEngine": "Disabled",
+  "workbench.activityBar.location": "hidden",
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  }
 }
