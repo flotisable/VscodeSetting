@@ -27,5 +27,9 @@
   "chat.commandCenter.enabled": false,
   "window.commandCenter": false,
   "workbench.layoutControl.enabled": false,
-  "workbench.editor.showTabs": "none"
+  "workbench.editor.showTabs": "none",
+  "chat.tools.edits.autoApprove": {
+    "**/*": false
+  },
+  "chat.agent.enabled": false
 }
