@@ -31,5 +31,6 @@
   "chat.tools.edits.autoApprove": {
     "**/*": false
   },
-  "chat.agent.enabled": false
+  "chat.agent.enabled": false,
+  "workbench.panel.opensMaximized": "always"
 }
