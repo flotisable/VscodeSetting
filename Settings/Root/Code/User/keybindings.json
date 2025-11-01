@@ -71,5 +71,10 @@
   {
     "key": "ctrl+w shift+h",
     "command": "workbench.action.moveActiveEditorGroupLeft"
+  },
+  {
+    "key": "ctrl+q",
+    "command": "workbench.action.terminal.focusAccessibleBuffer",
+    "when": "accessibilityModeEnabled && terminalFocus && terminalHasBeenCreated || accessibilityModeEnabled && terminalFocus && terminalProcessSupported"
   }
 ]

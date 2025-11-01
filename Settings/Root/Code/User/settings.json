@@ -39,4 +39,6 @@
     "-workbench.action.quickOpenView"
   ],
   "terminal.integrated.allowChords": false,
+  "editor.accessibilitySupport": "on",
+  "accessibility.accessibleView.closeOnKeyPress": false
 }
