@@ -32,5 +32,11 @@
     "**/*": false
   },
   "chat.agent.enabled": false,
-  "workbench.panel.opensMaximized": "always"
+  "workbench.panel.opensMaximized": "always",
+  "terminal.integrated.commandsToSkipShell": [
+    "-workbench.action.quickOpen",
+    "-workbench.action.terminal.focusFind",
+    "-workbench.action.quickOpenView"
+  ],
+  "terminal.integrated.allowChords": false,
 }
